@@ -1,6 +1,7 @@
 # SQLstudy<br />
 
 * 这是我学习SQL过程中的笔记，包括初级、中级、高级三个部分<br />
+* 如果大家想稍微细致的学习下SQL，可以试试[这个教程](https://community.modeanalytics.com/sql/)<br />
 ## 初级包括：<br />
 * SELECT FROM 语句和查询子句的顺序。<br />
 ## 中级包括：<br />
