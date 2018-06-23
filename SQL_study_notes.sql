@@ -11,19 +11,19 @@ SELECT  year AS "Year"             -- SQL中 双引号 通常来表示要指定�
         ,midwest AS "MidWest"
         ,northeast AS "NorthEast"
         ,west + south - 4*year AS "NonseasonCol"
-	FROM tutorial.us_housing_units
+    FROM tutorial.us_housing_units
 	
-	WHERE month_name LIKE 'J%'               -- 若不区分大小写则使用 ILIKE 
-		AND year NOT IN (1996,1997,1998)
-		AND (year BETWEEN 1996 AND 1999     -- 相当于: >= AND <=
-			OR west IS NULL)
-
+    WHERE month_name LIKE 'J%'               -- 若不区分大小写则使用 ILIKE 
+        AND year NOT IN (1996,1997,1998)
+        AND (year BETWEEN 1996 AND 1999     -- 相当于: >= AND <=
+            OR west IS NULL)
+        
 	/* 这里不进行筛选，仅仅改变结构 */
-	ORDER BY Year DESC, month         -- 可以对多个列进行排序，默认升序，若要降序则加上 DESC； 另外列名可以通过数字来替换：ORDER BY 1 DESC, 2
-	LIMIT 1000
+    ORDER BY Year DESC, month         -- 可以对多个列进行排序，默认升序，若要降序则加上 DESC； 另外列名可以通过数字来替换：ORDER BY 1 DESC, 2
+    LIMIT 1000
   
   
--- 查询字句的顺序： 
+-- 查询子句的顺序： 
 SELECT
 FROM
 WHERE       -- WHERE 是在聚合之前 对整个表进行过滤
@@ -62,47 +62,47 @@ SELECT  COUNT(month) AS CountYear
 -- GROUP BY
 -- 执行顺序是：先执行 FROM ，找到数据集后执行 GROUP BY ，最后执行 SELECT
 SELECT 	year
-		,MIN(low)
+        ,MIN(low)
         ,month
-		,MAX(high)
-	FROM tutorial.aapl_historical_stock_price
-	GROUP BY 1, 3        -- 这个 1，3是指前面select后面的第几个列
+        ,MAX(high)
+    FROM tutorial.aapl_historical_stock_price
+    GROUP BY 1, 3        -- 这个 1，3是指前面select后面的第几个列
     ORDER BY year, month
   
   
 -- DISTINCT
 SELECT 	DISTINCT year,month      -- 只筛选相应列的唯一组合值
-	FROM tutorial.aapl_historical_stock_price
+    FROM tutorial.aapl_historical_stock_price
   
 SELECT	COUNT(distinct year) as "count year"
-		,COUNT(DISTINCT month) as "count month"
-	FROM tutorial.aapl_historical_stock_price
+        ,COUNT(DISTINCT month) as "count month"
+    FROM tutorial.aapl_historical_stock_price
   
   
 -- CASE         -- 其实就是 SQL 中的 if 语句     从 case 到 end 之间的所有内容，其实就相当于一个新的列
 SELECT 	player_name
-		,weight
-		,CASE WHEN weight > 250 THEN 'over 250'
-			 WHEN weight > 200 THEN '201-250'
-			 WHEN weight > 175 THEN '176-200'
-			 ELSE '175 or under' END AS weight_group
-	FROM benn.college_football_players
+        ,weight
+        ,CASE WHEN weight > 250 THEN 'over 250'
+            WHEN weight > 200 THEN '201-250'
+            WHEN weight > 175 THEN '176-200'
+            ELSE '175 or under' END AS weight_group
+    FROM benn.college_football_players
 
 SELECT 	COUNT(CASE WHEN year = 'FR' THEN 1 ELSE NULL END) AS fr_count
-		,COUNT(CASE WHEN year = 'SO' THEN 1 ELSE NULL END) AS so_count
-		,COUNT(CASE WHEN year = 'JR' THEN 1 ELSE NULL END) AS jr_count
-		,COUNT(CASE WHEN year = 'SR' THEN 1 ELSE NULL END) AS sr_count
-	FROM benn.college_football_players
+        ,COUNT(CASE WHEN year = 'SO' THEN 1 ELSE NULL END) AS so_count
+        ,COUNT(CASE WHEN year = 'JR' THEN 1 ELSE NULL END) AS jr_count
+        ,COUNT(CASE WHEN year = 'SR' THEN 1 ELSE NULL END) AS sr_count
+    FROM benn.college_football_players
   
   
 -- 别名
 SELECT 	players.school_name
-		,players.player_name
-		,players.position
-		,players.weight
-	FROM benn.college_football_players players
-	WHERE players.state = 'GA'
-	ORDER BY players.weight DESC
+        ,players.player_name
+        ,players.position
+        ,players.weight
+    FROM benn.college_football_players players
+    WHERE players.state = 'GA'
+    ORDER BY players.weight DESC
 
 
 -- JOIN 和 Subqueries
@@ -167,12 +167,12 @@ SELECT *
 ---- 数据类型 ----
 ------------------
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-| Imported as	|			Stored as			|	With these rules																	|
+|  Imported as  |           Stored as           |   With these rules                                                                    |
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-|    String		|		  VARCHAR(1024)			|	Any characters, with a maximum field length of 1024 characters.						|
-|  Date/Time	|			TIMESTAMP			|	Stores year, month, day, hour, minute and second values as YYYY-MM-DD hh:mm:ss.		|
-|    Number		|		DOUBLE PRECISION		|	Numerical, with up to 17 significant digits decimal precision.						|
-|   Boolean		|			BOOLEAN				|	Only TRUE or FALSE values.															|
+|    String	    |           VARCHAR(1024)       |   Any characters, with a maximum field length of 1024 characters.                     |
+|  Date/Time    |           TIMESTAMP           |   Stores year, month, day, hour, minute and second values as YYYY-MM-DD hh:mm:ss.     |
+|    Number	    |       DOUBLE PRECISION        |   Numerical, with up to 17 significant digits decimal precision.                      |
+|   Boolean	    |           BOOLEAN             |   Only TRUE or FALSE values.                                                          |
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -- 其中 “Imported as” 表示在SQL中输入的数据类型； “Stored as” 表示SQL官方的与前面相对应的数据类型；
 -- 数据类型转换
@@ -187,51 +187,51 @@ SELECT  CAST(funding_total_usd AS VARCHAR) AS funding_total_usd_string      -- �
 --------------------------------------------------------------------------------------------------------------------
 
 SELECT 	companies.founded_at_clean
-		,acquisitions.acquired_at_cleaned
-		-- 这里 INTERVAL 表示一段时间间隔，后面可直接接英语表达式
-		,INTERVAL '10 days 999 secs' AS test_interval,	
-		-- DATE 相减， 返回整数，表示天数
-		,acquisitions.acquired_at_cleaned::DATE - companies.founded_at_clean::DATE AS date_to_acquisition,	
-		-- TIME 相减， 返回 INTERVAL 形式
-		,(acquisitions.acquired_at_cleaned::TIME + INTERVAL '100 secs') - acquisitions.acquired_at_cleaned::TIME AS date_to_acquisition
-		-- TIMESTAMP 相减， 返回 INTERVAL 形式	
-		,acquisitions.acquired_at_cleaned::TIMESTAMP - companies.founded_at_clean::TIMESTAMP AS time_to_acquisition		
-	FROM tutorial.crunchbase_companies_clean_date companies
-	JOIN tutorial.crunchbase_acquisitions_clean_date acquisitions
-	ON acquisitions.company_permalink = companies.permalink
-	WHERE founded_at_clean IS NOT NULL
+        ,acquisitions.acquired_at_cleaned
+        -- 这里 INTERVAL 表示一段时间间隔，后面可直接接英语表达式
+        ,INTERVAL '10 days 999 secs' AS test_interval,	
+        -- DATE 相减， 返回整数，表示天数
+        ,acquisitions.acquired_at_cleaned::DATE - companies.founded_at_clean::DATE AS date_to_acquisition,	
+        -- TIME 相减， 返回 INTERVAL 形式
+        ,(acquisitions.acquired_at_cleaned::TIME + INTERVAL '100 secs') - acquisitions.acquired_at_cleaned::TIME AS date_to_acquisition
+        -- TIMESTAMP 相减， 返回 INTERVAL 形式	
+        ,acquisitions.acquired_at_cleaned::TIMESTAMP - companies.founded_at_clean::TIMESTAMP AS time_to_acquisition		
+    FROM tutorial.crunchbase_companies_clean_date companies
+    JOIN tutorial.crunchbase_acquisitions_clean_date acquisitions
+    ON acquisitions.company_permalink = companies.permalink
+    WHERE founded_at_clean IS NOT NULL
 
 -- 获取当前时间时，不需要依赖与 FROM （该时间是世界协调时间，中国在东八区，所以应该再加上 8 hours）
 SELECT 	CURRENT_DATE AS date
-		,CURRENT_TIME AS time
-		,CURRENT_TIMESTAMP AS timestamp
-		,LOCALTIME AS localtime
-		,LOCALTIMESTAMP AS localtimestamp
-		,NOW() AS now
+        ,CURRENT_TIME AS time
+        ,CURRENT_TIMESTAMP AS timestamp
+        ,LOCALTIME AS localtime
+        ,LOCALTIMESTAMP AS localtimestamp
+        ,NOW() AS now
     
 -- 截取 TIMESTAMP 中的一部分
 SELECT 	cleaned_date
-		,EXTRACT('year'   FROM cleaned_date) AS year		-- 返回年份				整数
-		,EXTRACT('month'  FROM cleaned_date) AS month		-- 返回月份				整数
-		,EXTRACT('day'    FROM cleaned_date) AS day			-- 返回当月第几天		整数
-		,EXTRACT('hour'   FROM cleaned_date) AS hour		-- 返回小时				整数
-		,EXTRACT('minute' FROM cleaned_date) AS minute		-- 返回分钟				整数
-		,EXTRACT('second' FROM cleaned_date) AS second		-- 返回秒数				小数
-		,EXTRACT('decade' FROM cleaned_date) AS decade		-- 返回年份前三位数		整数
-		,EXTRACT('dow'    FROM cleaned_date) AS day_of_week	-- 返回星期几			整数
-	FROM tutorial.sf_crime_incidents_cleandate
+        ,EXTRACT('year'   FROM cleaned_date) AS year        -- 返回年份             整数
+        ,EXTRACT('month'  FROM cleaned_date) AS month       -- 返回月份             整数
+        ,EXTRACT('day'    FROM cleaned_date) AS day         -- 返回当月第几天       整数
+        ,EXTRACT('hour'   FROM cleaned_date) AS hour        -- 返回小时             整数
+        ,EXTRACT('minute' FROM cleaned_date) AS minute      -- 返回分钟             整数
+        ,EXTRACT('second' FROM cleaned_date) AS second      -- 返回秒数             小数
+        ,EXTRACT('decade' FROM cleaned_date) AS decade      -- 返回年份前三位数     整数
+        ,EXTRACT('dow'    FROM cleaned_date) AS day_of_week -- 返回星期几           整数
+    FROM tutorial.sf_crime_incidents_cleandate
   
 -- 将 TIMESTAMP 精确到指定精度
 SELECT 	cleaned_date,
-		,DATE_TRUNC('year'   , cleaned_date) AS year		-- 精确到年：	xxxx-01-01 00:00:00
-		,DATE_TRUNC('month'  , cleaned_date) AS month		-- 精确到月：	xxxx-xx-01 00:00:00
-		,DATE_TRUNC('week'   , cleaned_date) AS week		-- 精确到周：	xxxx-xx-xx 00:00:00
-		,DATE_TRUNC('day'    , cleaned_date) AS day			-- 精确到天： 	xxxx-xx-xx 00:00:00
-		,DATE_TRUNC('hour'   , cleaned_date) AS hour		-- 精确到时: 	xxxx-xx-xx xx:00:00
-		,DATE_TRUNC('minute' , cleaned_date) AS minute		-- 精确到分：	xxxx-xx-xx xx:xx:00
-		,DATE_TRUNC('second' , cleaned_date) AS second		-- 精确到秒：	xxxx-xx-xx xx:xx:xx
-		,DATE_TRUNC('decade' , cleaned_date) AS decade		-- 精确到十年：	xxx0-01-01 00:00:00
-	FROM tutorial.sf_crime_incidents_cleandate				-- 注意 DATE_TRUNC 返回形式是 TIMESTAMP
+        ,DATE_TRUNC('year'   , cleaned_date) AS year        -- 精确到年:    xxxx-01-01 00:00:00
+        ,DATE_TRUNC('month'  , cleaned_date) AS month       -- 精确到月:    xxxx-xx-01 00:00:00
+        ,DATE_TRUNC('week'   , cleaned_date) AS week        -- 精确到周:    xxxx-xx-xx 00:00:00
+        ,DATE_TRUNC('day'    , cleaned_date) AS day         -- 精确到天:    xxxx-xx-xx 00:00:00
+        ,DATE_TRUNC('hour'   , cleaned_date) AS hour        -- 精确到时:    xxxx-xx-xx xx:00:00
+        ,DATE_TRUNC('minute' , cleaned_date) AS minute      -- 精确到分:    xxxx-xx-xx xx:xx:00
+        ,DATE_TRUNC('second' , cleaned_date) AS second      -- 精确到秒:    xxxx-xx-xx xx:xx:xx
+        ,DATE_TRUNC('decade' , cleaned_date) AS decade      -- 精确到十年：	xxx0-01-01 00:00:00
+    FROM tutorial.sf_crime_incidents_cleandate              -- 注意 DATE_TRUNC 返回形式是 TIMESTAMP
   
 
   
@@ -239,29 +239,29 @@ SELECT 	cleaned_date,
 ---- String Functions (LEFT; RIGHT; SUBSTR; TRIM; POSITION; CONCAT/||; UPPER/LOWER; COALESCE  ----
 --------------------------------------------------------------------------------------------------
 SELECT 	incidnt_num
-		,date
-		,LEFT(date, 10) AS cleaned_date						-- 返回某变量最左边起的 n 个字符
-		,RIGHT(date, LENGTH(date) - 11) AS cleaned_time		-- 返回某变量最右边起的 n 个字符
-		,SUBSTR(date, 4, 2) AS day							-- 返回某变量从 某字符起的 n个字符
-		
-		-- 参数： 1. leading/trailing/both 指定从 左/右/两边 删除字符； 2. '' 内的任何字符否会被去除； 3. FROM 指定需要修剪的列名
-		,TRIM(both '0+M ' FROM date) AS test_1				-- 剔除特定字符后的剩余字符
-		
-		,POSITION('A' IN date) AS a_position_1				-- POSITION and STRPOS 都用来返回某个字符的首次出现位置
-		,STRPOS(date, 'A') AS a_position_2 					-- POSITION and STRPOS 都用来返回某个字符的首次出现位置
-		
-		,CONCAT(incidnt_num, ' in date of: ', date) AS concat_1		-- CONCAT 只是把字符串拼接在一起
-		,incidnt_num || ' in date of: ' || date AS concat_2			-- 也可以通过 || 操作符进行拼接
-		
-		,LOWER(date) AS lowered								-- 字母小写化
-		,UPPER(date) AS uppered								-- 字母大写化
-	FROM tutorial.sf_crime_incidents_2014_01
+        ,date
+        ,LEFT(date, 10) AS cleaned_date						-- 返回某变量最左边起的 n 个字符
+        ,RIGHT(date, LENGTH(date) - 11) AS cleaned_time		-- 返回某变量最右边起的 n 个字符
+        ,SUBSTR(date, 4, 2) AS day							-- 返回某变量从 某字符起的 n个字符
+        
+        -- 参数： 1. leading/trailing/both 指定从 左/右/两边 删除字符； 2. '' 内的任何字符否会被去除； 3. FROM 指定需要修剪的列名
+        ,TRIM(both '0+M ' FROM date) AS test_1				-- 剔除特定字符后的剩余字符
+        
+        ,POSITION('A' IN date) AS a_position_1				-- POSITION and STRPOS 都用来返回某个字符的首次出现位置
+        ,STRPOS(date, 'A') AS a_position_2 					-- POSITION and STRPOS 都用来返回某个字符的首次出现位置
+        
+        ,CONCAT(incidnt_num, ' in date of: ', date) AS concat_1		-- CONCAT 只是把字符串拼接在一起
+        ,incidnt_num || ' in date of: ' || date AS concat_2			-- 也可以通过 || 操作符进行拼接
+        
+        ,LOWER(date) AS lowered								-- 字母小写化
+        ,UPPER(date) AS uppered								-- 字母大写化
+    FROM tutorial.sf_crime_incidents_2014_01
 
 SELECT 	incidnt_num,
-		descript,
-		COALESCE(descript, 'No Description')             	-- COALESCE 用来填补空值
-	FROM tutorial.sf_crime_incidents_cleandate
-	ORDER BY descript DESC 	
+        descript,
+        COALESCE(descript, 'No Description')             	-- COALESCE 用来填补空值
+    FROM tutorial.sf_crime_incidents_cleandate
+    ORDER BY descript DESC 	
     
 	
 ------------------------------------------------------------------------------
@@ -269,78 +269,78 @@ SELECT 	incidnt_num,
 ------------------------------------------------------------------------------
 (
 -- 一般需要二级操作中，两个操作不同，且 groupby 的分组变量不同，则需要 Subqueries
-SELECT 	LEFT(sub.date, 2) AS cleaned_month,
-		sub.day_of_week,
-		AVG(sub.incidents) AS average_incidents
+SELECT 	LEFT(sub.date, 2) AS cleaned_month
+        ,sub.day_of_week
+        ,AVG(sub.incidents) AS average_incidents
 	FROM(													-- Subqueries 直接用 FROM 连接
-        SELECT day_of_week,
-			date,
-			COUNT(incidnt_num) AS incidents
-			FROM tutorial.sf_crime_incidents_2014_01
-			GROUP BY 1,2
-		) sub
-	GROUP BY 1,2
-	ORDER BY 1,2
+        SELECT day_of_week
+               ,date
+            COUNT(incidnt_num) AS incidents
+            FROM tutorial.sf_crime_incidents_2014_01
+            GROUP BY 1,2
+        ) sub
+    GROUP BY 1,2
+    ORDER BY 1,2
 
-	
+    
 SELECT *
-	FROM tutorial.sf_crime_incidents_2014_01
-	WHERE date IN (
-		SELECT date									-- Subqueries 用 WHERE 连接
-			FROM tutorial.sf_crime_incidents_2014_01
-			ORDER BY date
-			LIMIT 5
-		)
+    FROM tutorial.sf_crime_incidents_2014_01
+    WHERE date IN (
+        SELECT date									-- Subqueries 用 WHERE 连接
+            FROM tutorial.sf_crime_incidents_2014_01
+            ORDER BY date
+            LIMIT 5
+        )
+    
+    
+SELECT  incidents.*
+        ,sub.count AS total_incidents_in_category
+    FROM tutorial.sf_crime_incidents_2014_01 incidents
+    JOIN (													-- Subqueries 用 JOIN 连接
+            SELECT  category
+                    ,COUNT(*) AS count
+            FROM tutorial.sf_crime_incidents_2014_01
+            GROUP BY 1
+            ORDER BY 2
+            LIMIT 3
+        ) sub
+        ON sub.category = incidents.category
 
 
-SELECT incidents.*,
-       sub.count AS total_incidents_in_category
-  FROM tutorial.sf_crime_incidents_2014_01 incidents
-  JOIN (													-- Subqueries 用 JOIN 连接
-        SELECT category,
-               COUNT(*) AS count
-          FROM tutorial.sf_crime_incidents_2014_01
-         GROUP BY 1
-         ORDER BY 2
-         LIMIT 3
-       ) sub
-    ON sub.category = incidents.category
+SELECT COALESCE(acquisitions.month, investments.month) AS month				----  Subqueries 后面的 FROM 和 JOIN 分别包含一个 子查询
+        ,acquisitions.companies_acquired
+        ,investments.companies_rec_investment
+    FROM (
+            SELECT  acquired_month AS month
+                    ,COUNT(DISTINCT company_permalink) AS companies_acquired
+            FROM tutorial.crunchbase_acquisitions
+            GROUP BY 1
+        ) acquisitions
+    
+    FULL JOIN (
+            SELECT  funded_month AS month
+                    ,COUNT(DISTINCT company_permalink) AS companies_rec_investment
+            FROM tutorial.crunchbase_investments
+            GROUP BY 1
+        )investments
+    
+        ON acquisitions.month = investments.month
+    ORDER BY 1 DESC
 
 
-SELECT COALESCE(acquisitions.month, investments.month) AS month,				----  Subqueries 后面的 FROM 和 JOIN 分别包含一个 子查询
-       acquisitions.companies_acquired,
-       investments.companies_rec_investment
-  FROM (
-        SELECT acquired_month AS month,
-               COUNT(DISTINCT company_permalink) AS companies_acquired
-          FROM tutorial.crunchbase_acquisitions
-         GROUP BY 1
-       ) acquisitions
-
-  FULL JOIN (
-        SELECT funded_month AS month,
-               COUNT(DISTINCT company_permalink) AS companies_rec_investment
-          FROM tutorial.crunchbase_investments
-         GROUP BY 1
-       )investments
-
-    ON acquisitions.month = investments.month
- ORDER BY 1 DESC
-
-
-SELECT investor_name,									-- 也可以与 UNION 结合起来
-       COUNT(*) AS sum_raise
-  FROM (
-        SELECT *
-          FROM tutorial.crunchbase_investments_part1
-
-         UNION ALL
-
-        SELECT *
-          FROM tutorial.crunchbase_investments_part2
-       ) sub
-  GROUP BY 1
-  ORDER BY 2 DESC
+SELECT  investor_name									-- 也可以与 UNION 结合起来
+        ,COUNT(*) AS sum_raise
+    FROM (
+            SELECT *
+            FROM tutorial.crunchbase_investments_part1
+    
+            UNION ALL
+    
+            SELECT *
+            FROM tutorial.crunchbase_investments_part2
+        ) sub
+    GROUP BY 1
+    ORDER BY 2 DESC
 )
 
 
